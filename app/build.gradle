@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.android.support:customtabs:27.1.1'
     implementation 'com.android.support:support-media-compat:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.google.api-client:google-api-client:1.23.0'
     implementation 'com.google.http-client:google-http-client-android:1.23.0'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
@@ -69,12 +69,10 @@ dependencies {
 }
 
 
-task executeTest(dependsOn: 'connectedAndroidTest') << {
-}
+task _startServer(dependsOn: ':backend:appengineStart')
+task _startTest(dependsOn: 'connectedAndroidTest')
+task _stopServer(dependsOn: ':backend:appengineStop')
 
-task runServerAndExecTest(dependsOn: ':backend:appengineStart') << {
-}
-
-runServerAndExecTest.finalizedBy executeTest
-executeTest.finalizedBy ':backend:appengineStop'
+_stopServer.dependsOn _startTest
+_startTest.dependsOn _startServer
 

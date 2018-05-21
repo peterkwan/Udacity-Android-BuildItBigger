@@ -40,20 +40,20 @@ public class MainActivityFragment extends Fragment implements FetchJokeListener,
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
-        AdRequest adRequest = new AdRequest.Builder()
+        final AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mAdView.loadAd(adRequest);
-
-        mInterstitialAd = new InterstitialAd(getContext());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(adRequest);
 
         Button tellJokeButton = root.findViewById(R.id.tellJokeButton);
         tellJokeButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                mInterstitialAd = new InterstitialAd(MainActivityFragment.this.getContext());
+                mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+                mInterstitialAd.loadAd(adRequest);
+
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
 
